@@ -1,0 +1,33 @@
+쿼리 스트링 파싱해서 객체 생성
+<input>
+    "https://www.ebrainsoft.com/?id=kmc774&favorite=001&favorite=002"
+
+<예시>
+    MyRequest reqest = parse(queryString);
+
+    assertEquals( "kmc774",  reqest.getParam("id") );
+    assertEquals( Array.class ,  reqest.getParams("favorite").class );
+    assertEquals( 2 ,  reqest.getParams("favorite").size() );
+    assertEquals( "001" ,  reqest.getParams("favorite")[0] );
+    assertEquals( "002" ,  reqest.getParams("favorite")[1] );
+
+
+multipart/form-data 파싱 하기
+
+<예시>
+    File multipartData = new File("request-dummy.txt");
+    MyMultipartRequest myMultipartRequest = parse(multipartData);
+
+    assertEquals( "POST",  myMultipartRequest.getMethod() );
+    assertEquals( "localhost:8080",  myMultipartRequest.getHeader("Host") );
+    assertEquals( "Apache-HttpClient/4.3.4 (java 1.5)",  myMultipartRequest.getHeader("User-Agent") );
+
+
+
+멀티파트 파일 읽어서 파일로 저장
+<예시>
+    MultipartFile firstFile = myMultipartRequest.getMultipartFile("text1");
+    firstFile.store("c:/output/first.txt);
+
+    MultipartFile secondFile = myMultipartRequest.getMultipartFile("text2");
+    secondFile.store("c:/output/second.txt);
